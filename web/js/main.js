@@ -19,17 +19,28 @@ require.config({
 		backbone: 	'./thirdparty/backbone-min',
 		underscore: './thirdparty/underscore-min',
 		marionette: './thirdparty/marionette-min',
-		bootstrap: 	'./thirdpary/bootstrap.min',
+		bootstrap: 	'./thirdparty/bootstrap.min',
+	//CONTROLLERS
+		route_controller: './controllers/routeController',
+	//ROUTERS
+		app_router: './routers/appRouter',
 	//VIEWS
-		navbar_view: './views/navbar'
+		navbar_view: './views/navbar',
+		splash_view: './views/splash',
+		about_view: './views/about'
 	}
 });
 
-require(['jquery', 'underscore', 'backbone', 'marionette', 'navbar_view'], function($, _, Backbone, Marionette, NavbarView){
-	var Scotch = Scotch || {};
+require(['jquery', 'underscore', 'backbone', 'marionette', 'navbar_view', 'app_router', 'route_controller'], function($, _, Backbone, Marionette, NavbarView, AppRouter, RouteController){
+
+	window.Scotch = {};
 
 	Scotch.App = new Backbone.Marionette.Application();
 	var NavbarView = new NavbarView();
+	var RouteController = new RouteController();
+	var AppRouter = new AppRouter({
+		controller: RouteController
+	});
 
 	Scotch.App.addRegions({
 		navRegion: "#navbar",
@@ -37,7 +48,6 @@ require(['jquery', 'underscore', 'backbone', 'marionette', 'navbar_view'], funct
 	});
 
 	Scotch.App.addInitializer(function(options){
-		//var NavbarView = new NavbarView();
 		Scotch.App.navRegion.show(NavbarView);
 	});
 
@@ -46,7 +56,6 @@ require(['jquery', 'underscore', 'backbone', 'marionette', 'navbar_view'], funct
 			Backbone.history.start();
 		}
 	});
-
 
 	Scotch.App.start();
 });
